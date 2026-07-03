@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title> Contrôle Conformité Atelier </title>
+    <link rel="shortcut icon" href="Shorticon SMM.png">
+    <link rel="stylesheet" href="Style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+   
+</head>
+
+<body>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="Logo SMM.png" alt="Logo SMM Composites" style="max-width: 150px;">
+    </div>
+    <h2>Audit zone chimie</h2>
+
+    <div class="button-group">
+        <button type="button" id="resetFormBtn" class="btn-reset"> ✕ Réinitialiser </button>
+        <button type="button" class="btn-submit" onclick="validerAudit()"> ✓ Valider le contrôle</button>
+    </div>
+    
+    <form id="auditForm" onsubmit="event.preventDefault();">
+         <div class="form-group">
+            <label>Date de l'audit</label>
+            <div id="dateAudit" class="date-text-display"></div>
+        </div>
+
+        <div class="form-group">
+            <label> Nom de l'auditeur </label>
+            <input type="text" id="nomAuditeur" name="nom_auditeur" class="text-input" required>
+        </div>
+
+        <div class="form-group">
+            <label>Zone balayée ?</label>
+            <div class="radio-tile-group">
+                <div class="radio-container">
+                    <input type="radio" id="zone_balayée_oui" name="zone_balayée" value="Oui" required>
+                    <label for="zone_balayée_oui" class="radio-label">Oui</label>
+                </div>
+                <div class="radio-container">
+                    <input type="radio" id="zone_balayée_non" name="zone_balayée" value="Non">
+                    <label for="zone_balayée_non" class="radio-label">Non</label>
+                </div>
+            </div>
+        </div>
+
+        
+       <div class="form-group">
+            <label>Présence de déchets (papier, gants, ...) ?</label>
+            <div class="radio-tile-group">
+                <div class="radio-container">
+                    <input type="radio" id="dechets_oui" name="dechets" value="Oui" onchange="toggleDechets(this.value)" required>
+                    <label for="dechets_oui" class="radio-label">Oui</label>
+                </div>
+                <div class="radio-container">
+                    <input type="radio" id="dechets_non" name="dechets" value="Non" onchange="toggleDechets(this.value)">
+                    <label for="dechets_non" class="radio-label">Non</label>
+                </div>
+            </div>
+            <div id="status_dechets" class="status-box" style="display:none;"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Présence de produit au sol ?</label>
+            <div class="radio-tile-group">
+                <div class="radio-container">
+                    <input type="radio" id="produit_oui" name="produit" value="Oui" onchange="toggleProduit(this.value)" required>
+                    <label for="produit_oui" class="radio-label">Oui</label>
+                </div>
+                <div class="radio-container">
+                    <input type="radio" id="produit_non" name="produit" value="Non" onchange="toggleProduit(this.value)">
+                    <label for="produit_non" class="radio-label">Non</label>
+                </div>
+            </div>
+            <div id="status_produit" class="status-box" style="display:none;"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Carton époxy changé ?</label>
+            <div class="radio-tile-group">
+                <div class="radio-container">
+                    <input type="radio" id="epoxy_oui" name="epoxy" value="Oui" onchange="toggleEpoxy(this.value)" required>
+                    <label for="epoxy_oui" class="radio-label">Oui</label>
+                </div>
+                <div class="radio-container">
+                    <input type="radio" id="epoxy_non" name="epoxy" value="Non" onchange="toggleEpoxy(this.value)">
+                    <label for="epoxy_non" class="radio-label">Non</label>
+                </div>
+            </div>
+    </div>
+    
+    <div id="conditional_epoxy" style="display:none; margin-top:15px; border-left:3px solid #b31c1c; padding-left:10px;">
+        <label for="pourquoiEpoxy">Pourquoi le carton n'est pas changé ?</label>
+        <input type="text" id="pourquoiEpoxy" name="pourquoi_epoxy" class="text-input" style="border:2px solid #242424; margin-bottom:15px;">
+        
+        <label>Pourquoi le carton n'est pas changé ? (photo)</label>
+        <div class="photo-zone" onclick="document.getElementById('photoBalancesInput').click()">
+            <div class="icon-camera">📷</div>
+            <p><strong>Photo des balances</strong></p>
+            <span>Cliquez ici pour capturer</span>
+            <input type="file" id="photoBalancesInput" accept="image/*" capture="environment" style="display:none">
+        </div>
+        <img id="aperçuEpoxy" src="" alt="Aperçu epoxy" style="display:none; max-width:100px; margin-top:10px; border-radius:5px;">
+    </div>
+
+    <div class="form-group">
+        <label>Etiquetage et DLU conformément ?</label>
+        <div class="radio-tile-group">
+            <div class="radio-container">
+                <input type="radio" id="dlu_oui" name="dlu" value="Oui" onchange="toggleDlu(this.value)" required>
+                <label for="dlu_oui" class="radio-label">Oui</label>
+            </div>
+            <div class="radio-container">
+                <input type="radio" id="dlu_non" name="dlu" value="Non" onchange="toggleDlu(this.value)">
+                <label for="dlu_non" class="radio-label">Non</label>
+            </div>
+        </div>
+    </div>
+    <div id="status_dlu" class="status-box" style="display:none;"></div>
+
+    <div class="form-group">
+        <label>Compatibilité des fûts ?</label>
+        <div class="radio-tile-group">
+            <div class="radio-container">
+                <input type="radio" id="futs_oui" name="futs" value="Oui" onchange="toggleFuts(this.value)" required>
+                <label for="futs_oui" class="radio-label">Oui</label>
+            </div>
+            <div class="radio-container">
+                <input type="radio" id="futs_non" name="futs" value="Non" onchange="toggleFuts(this.value)">
+                <label for="futs_non" class="radio-label">Non</label>
+            </div>
+        </div>
+    
+        <div id="conditional_futs" style="display:none; margin-top:15px;">
+            <label for="actionFuts">Action de correction des fûts</label>
+            <div class="select-wrapper">
+                    <select id="actionFuts" name="action_futs">
+                        <option value="" disabled selected hidden>Rechercher des éléments</option>
+                        <option value="Separer">Sur chariot à roulette ou bac de rétention</option>
+                        <option value="Etiqueter">Pas d'action</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="entretienBalances">Entretien des balances</label>
+            <div class="select-wrapper">
+                <select id="entretienBalances" name="entretien_balances" required>
+                    <option value="" disabled selected hidden>Rechercher des éléments</option>
+                    <option value="Conforme">Nettoyage du téflon</option>
+                    <option value="Non Conforme">Changement du téflon</option>
+                    <option value="A Nettoyer">Pas d'action</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Photo balances</label>
+            <div class="photo-zone" onclick="document.getElementById('photoBalancesInput').click()">
+                <div class="icon-camera">📷</div>
+                <p><strong>Photo des balances</strong></p>
+                <span>Cliquez ici pour capturer</span>
+                <input type="file" id="photoBalancesInput" accept="image/*" capture="environment" style="display:none">
+            </div>
+            <img id="aperçuBalances" src="" alt="Aperçu balance" style="display:none; max-width:100px; margin-top:10px; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label>Résultat obtenu</label>
+            <div class="photo-zone" onclick="document.getElementById('photoRésultatInput').click()">
+                <div class="icon-camera">📷</div>
+                <p><strong>Résultat obtenu</strong></p>
+                <span>Cliquez ici pour capturer</span>
+                <input type="file" id="photoRésultatInput" accept="image/*" capture="environment" style="display:none">
+            </div>
+            <img id="aperçuRésultat" src="" alt="Aperçu résultat" style="display:none; max-width:100px; margin-top:10px; border-radius:5px;">
+        </div>
+
+        <div class="form-group">
+            <label> Remarques de la semaine </label>
+            <input type="text" id="remarquesSemaine" name="remarques_semaine" class="text-input" required>
+        </div>
+
+        <div class="form-group">
+            <label> Signature auditeur </label>
+            <div class="signature-container">
+                <canvas id="signaturePad"></canvas>
+                <div class="signature-toolbar">
+                    <button type="button" id="clearBtn" title="Effacer la signature" required>✕ Effacer</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="Réponses.js"></script>
+<script src="Envoi des données.js"></script>
+
+</body>
+</html>

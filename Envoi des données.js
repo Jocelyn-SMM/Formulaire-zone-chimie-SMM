@@ -113,7 +113,7 @@ window.validerAudit = async function() {
     }
 
     try {
-        const response = await fetch('https://overcook-debrief-lark.ngrok-free.dev', {
+        const response = await fetch('https://overcook-debrief-lark.ngrok-free.dev/api/audit', {
             method: 'POST',
             body: formData
         });

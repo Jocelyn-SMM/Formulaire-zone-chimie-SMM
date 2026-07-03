@@ -30,6 +30,30 @@ h2 {
     padding-bottom: 10px;
 }
 
+/* Taille de base pour les petits écrans (mobiles) */
+body {
+    font-size: 16px; /* Taille confortable sur mobile */
+}
+
+/* À partir de 768px de large (tablettes et PC), on augmente un peu */
+@media (min-width: 768px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+/* Pour les très grands écrans */
+@media (min-width: 1200px) {
+    body {
+        font-size: 20px;
+    }
+}
+
+button {
+    padding: 15px 20px; /* Ajoute de l'espace autour du texte pour agrandir la zone cliquable */
+    font-size: 1.2rem;   /* Police un peu plus grande dans les boutons */
+}
+
 /* --- Formulaire & Champs --- */
 .form-group { margin-bottom: 20px; }
 

@@ -54,6 +54,13 @@ button {
     font-size: 1.2rem;   /* Police un peu plus grande dans les boutons */
 }
 
+@media (max-width: 480px) {
+    #tonBoutonReset {
+        font-size: 0.8rem; /* Réduit la police sur petit écran */
+        padding: 8px 4px;  /* Réduit les marges internes */
+    }
+}
+
 /* --- Formulaire & Champs --- */
 .form-group { margin-bottom: 20px; }
 

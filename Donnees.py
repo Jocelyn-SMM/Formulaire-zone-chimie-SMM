@@ -36,7 +36,7 @@ def envoyer_notification(donnees):
     - Auditeur : {donnees['Auditeur']}
     - Remarques : {donnees['Remarques']}
 
-    Veuillez consulter le fichier Excel 'Consultation audits.xlsx' pour voir l'audit complet avec les photos et la signature.
+    Veuillez consulter le fichier Excel audits sur le réseau (N:\05-HSE\9 - Audits de zone\Application audit de zone\Programmation) pour voir l'audit complet avec les photos et la signature.
 
     Ceci est un message automatique.
     """

@@ -12,26 +12,26 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def envoyer_notification(donnees):
-    # --- CONFIGURATION DU SERVEUR MAIL ---
+    # Configuration du serveur mail pour Outlook
     smtp_server = "smtp.office365.com"
     smtp_port = 587
     expediteur = "jcoisine@smm-composites.com"
     mot_de_passe = "*jojo83*"
     
     # Liste des personnes qui vont recevoir le mail
-    destinataires = ["jcoisine@smm-composites.com"]
+    destinataires = ["jcoisine@smm-composites.com" , "jgueguen@smm-composites.com"]
 
-    # --- CRÉATION DU MESSAGE ---
+    # Création du message
     msg = MIMEMultipart()
     msg['From'] = expediteur
     msg['To'] = ", ".join(destinataires)
     msg['Subject'] = f"🔔 Nouvel Audit Chimie réalisé 🔔"
 
-# Le chemin vers ton fichier sur le réseau
+    # Le chemin vers le fichier du réseau où le fichier Excel est stocké
     chemin_excel = r"N:/05-HSE/9 - Audits de zone/Consultation audits zone chimie.xlsx"
     lien_hypertexte = f"file:///{chemin_excel}"
 
-    # Corps du mail en HTML avec un bouton
+    # Corps du mail
     corps_mail = f"""
     <html>
       <body>
@@ -55,7 +55,7 @@ def envoyer_notification(donnees):
     
     msg.attach(MIMEText(corps_mail, 'html', 'utf-8'))
 
-    # --- ENVOI ---
+    # Envoi du mail via le serveur SMTP
     try:
         serveur = smtplib.SMTP(smtp_server, smtp_port)
         serveur.starttls() # Sécurise la connexion
@@ -76,7 +76,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route('/api/audit', methods=['POST'])
 def recevoir_audit():
     try:
-        # 1. Extraction des textes et choix Oui/Non
+        # 1. Extraction des textes et choix Oui / Non
         donnees = {
             "Date": request.form.get("date_audit"),
             "Auditeur": request.form.get("nom_auditeur"),
@@ -92,10 +92,11 @@ def recevoir_audit():
             "Remarques": request.form.get("remarques_semaine", "")
         }
 
-        # Liste exacte de tous les fichiers attendus
+        # Liste exacte de tous les fichiers (photos) attendus
         liste_fichiers = ['photo_résultat', 'photo_epoxy', 'photo_balances', 'signature']
 
         # 2. Gestion et sauvegarde des fichiers sur le PC
+
         chemins_fichiers = {}
         for clé in liste_fichiers:
             fichier = request.files.get(clé)
@@ -107,8 +108,10 @@ def recevoir_audit():
             else:
                 chemins_fichiers[clé] = None
 
-        # --- 3. Gestion intelligente du fichier Excel ---
+        # 3. Gestion du fichier Excel
+
         if os.path.exists(EXCEL_FILE):
+
             # Le fichier existe déjà : on tente de le charger
             try:
                 wb = openpyxl.load_workbook(EXCEL_FILE)
@@ -116,8 +119,9 @@ def recevoir_audit():
                 print("Fichier Excel existant chargé avec succès.")
             except PermissionError:
                 # Sécurité si le fichier est resté ouvert dans Excel sur ton PC
-                return jsonify({"status": "error", "message": "⚠️ Ferme le fichier Consultation audits zone chimie.xlsx sur ton ordinateur avant de valider !"}), 500
+                return jsonify({"status": "error", "message": "⚠️ Fermez le fichier Consultation audits zone chimie.xlsx sur votre ordinateur avant de valider !"}), 500
         else:
+
             # Le fichier n'existe pas du tout : on le crée à neuf avec ses entêtes
             wb = Workbook()
             ws = wb.active
@@ -127,9 +131,9 @@ def recevoir_audit():
             wb.save(EXCEL_FILE)
             print("Nouveau fichier Excel créé avec les entêtes.")
 
-        # --- 4. Ajout des données textuelles sur la ligne suivante ---
+        # 4. Ajout des données  sur la ligne suivante
 
-        prochaine_ligne = 2 # On commence à la ligne 2 (après les en-têtes)
+        prochaine_ligne = 2
         while ws.cell(row=prochaine_ligne, column=1).value is not None:
             prochaine_ligne += 1
         
@@ -139,12 +143,9 @@ def recevoir_audit():
         for col_idx, valeur in enumerate(valeurs_textes, start=1):
             ws.cell(row=prochaine_ligne, column=col_idx, value=valeur)
 
-        # On agrandit la hauteur de la ligne pour que les images ne bavent pas
         ws.row_dimensions[prochaine_ligne].height = 80
 
-        # --- 5. Insertion visuelle des 4 images avec traitement de transparence ---
-        # On cale les colonnes pour correspondre exactement à l'ordre des en-têtes :
-        # K = Photo Principale (13), L = Photo Carton Époxy (7), M = Photo Balances (11), N = Signature (14)
+        # 5. Insertion visuelle des 4 images
         colonnes_images = {
             'photo_résultat': 13,
             'photo_epoxy': 14,
@@ -158,7 +159,7 @@ def recevoir_audit():
             
             if chemin is not None and os.path.exists(chemin):
                 try:
-                    # 1. Traitement de l'image (ton code actuel)
+                    # 1. Traitement de l'image
                     with PILImage.open(chemin) as pil_img:
                         if pil_img.mode in ('RGBA', 'LA') or (pil_img.mode == 'P' and 'transparency' in pil_img.info):
                             fond_blanc = PILImage.new('RGBA', pil_img.size, (255, 255, 255))
@@ -170,16 +171,12 @@ def recevoir_audit():
 
                     # 2. Ajout avec ancrage à la cellule
                     img = OpenpyxlImage(chemin)
-                    img.width = 80  # Ajusté pour tenir dans une cellule standard
+                    img.width = 80
                     img.height = 60
                     
                     cellule_cible = f"{lettre_colonne}{prochaine_ligne}"
-                    
-                    # C'est ici la correction : on ancre l'image à la cellule
                     img.anchor = cellule_cible
                     ws.add_image(img) 
-                    
-                    # 3. Ajustement visuel
                     ws.column_dimensions[lettre_colonne].width = 15
                     ws.row_dimensions[prochaine_ligne].height = 65
                     
@@ -189,6 +186,8 @@ def recevoir_audit():
             else:
                 ws.cell(row=prochaine_ligne, column=col_idx, value="Aucune")
 
+        # 6. Sauvegarde du fichier Excel et envoi du mail de notification
+
         wb.save(EXCEL_FILE)
         try:
             envoyer_notification(donnees)
@@ -197,8 +196,9 @@ def recevoir_audit():
         
         return jsonify({"status": "success", "message": "Audit validé avec succès !"}), 200
 
+    # Gestion des erreurs
     except Exception as e:
-        # Ce bloc-ci ne s'exécute QUE si le code plante gravement
+        # Ce bloc-ci ne s'exécute que si le code plante gravement
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':

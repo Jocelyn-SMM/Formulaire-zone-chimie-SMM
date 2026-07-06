@@ -43,7 +43,7 @@ label { display: block; font-weight: bold; margin-bottom: 8px; }
     box-sizing: border-box;
 }
 
-/* --- Radio Tiles (Très lisibles) --- */
+/* --- Choix Oui / Non --- */
 .radio-tile-group { display: flex; gap: 10px; }
 .radio-container { flex: 1; }
 .radio-container input { display: none; }
@@ -62,7 +62,7 @@ input:checked + .radio-label {
     border-color: var(--rouge-smm);
 }
 
-/* --- Zones Photos (Design Interactif) --- */
+/* --- Zones Photos --- */
 .photo-zone {
     border: 2px dashed var(--rouge-smm);
     border-radius: 10px;
@@ -84,9 +84,9 @@ input:checked + .radio-label {
 }
 #signaturePad { width: 100%; height: 150px; cursor: crosshair; }
 
-/* Style du bouton Effacer */
+/* Style du bouton "Effacer" */
 #clearBtn {
-    background-color: var(--noir-smm); /* Utilise ta variable noir */
+    background-color: var(--noir-smm);
     color: var(--blanc);
     border: none;
     padding: 8px 16px;
@@ -98,14 +98,14 @@ input:checked + .radio-label {
 }
 
 #clearBtn:hover {
-    background-color: var(--rouge-smm); /* Devient rouge au survol */
+    background-color: var(--rouge-smm);
 }
 
 .signature-container {
     border: 2px solid var(--noir-smm);
     border-radius: 5px;
     background: var(--blanc);
-    padding: 10px; /* Ajoute un peu d'espace autour */
+    padding: 10px;
 }
 
 /* --- Boutons --- */
@@ -115,17 +115,12 @@ input:checked + .radio-label {
     color: var(--blanc);
     border: none;
     padding: 15px;
-    /* On change la largeur fixe par une largeur qui s'adapte au contenu */
     width: auto; 
     min-width: 100px;
     border-radius: 5px;
-    
-    /* Ajout du centrage parfait */
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    /* Optionnel : pour éviter que le texte ne saute à la ligne */
     white-space: nowrap;
 }
 

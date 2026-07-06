@@ -1,7 +1,10 @@
+// Récupération des éléments du fichier HTML (boutons "Supprimer" et "Valider")
+
 const resetBtn = document.getElementById('resetFormBtn');
 const form = document.getElementById('auditForm');
 
-// Fonction du bouton "Réinitialiser" en haut
+// Fonction du bouton "Supprimer"
+
 if (resetBtn && form) {
     resetBtn.addEventListener('click', () => {
         if (confirm("Es-tu sûr de vouloir effacer toutes les réponses ?")) {
@@ -37,6 +40,7 @@ if (resetBtn && form) {
 }
 
 // Fonction du bouton "Valider"
+
 window.validerAudit = async function() {
     const form = document.getElementById('auditForm');
     
@@ -123,13 +127,13 @@ window.validerAudit = async function() {
             
             form.reset(); 
             
-            // 1. On supprime les indications "Conforme / Non Conforme" (ce qu'on a fait tout à l'heure)
+            // 1. On supprime les indications "Conforme / Non Conforme" 
             const statusBoxes = document.querySelectorAll('.status-box');
             statusBoxes.forEach(box => {
                 box.style.display = 'none';
             });
             
-            // 2. ⚠️ ON SUPPRIME LES APERÇUS PHOTOS (ta demande actuelle)
+            // 2. On supprime les aperçus des photos
             const apercuBalances = document.getElementById('apercuBalances');
             if (apercuBalances) {
                 apercuBalances.src = "";

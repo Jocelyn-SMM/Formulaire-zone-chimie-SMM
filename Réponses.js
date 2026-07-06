@@ -9,13 +9,14 @@ function myFunction_date() {
         let dateMaj = dateLocale.charAt(0).toUpperCase() + dateLocale.slice(1);
         
         dateDiv.textContent = dateMaj;
-        console.log("Date calculée : " + dateMaj); // Regarde dans la console F12
+        console.log("Date calculée : " + dateMaj);
     }
 }
 
 // Appel de la date au chargement
 window.addEventListener('DOMContentLoaded', myFunction_date);
 
+// Gestion des réponses Oui / Non pour la présence de déchets sur la zone
 function toggleDechets(value) {
     const box = document.getElementById('status_dechets');
     if (!box) return;
@@ -29,6 +30,7 @@ function toggleDechets(value) {
     }
 }
 
+// Gestion des réponses Oui / Non pour la présence de produit au sol
 function toggleProduit(value) {
     const box = document.getElementById('status_produit');
     if (!box) return;
@@ -42,6 +44,7 @@ function toggleProduit(value) {
     }
 }
 
+// Gestion des réponses Oui / Non pour le changement du carton époxy
 function toggleEpoxy(value) {
     const div = document.getElementById('conditional_epoxy');
     const input = document.getElementById('pourquoiEpoxy');
@@ -55,6 +58,7 @@ function toggleEpoxy(value) {
     }
 }
 
+// Gestion des réponses Oui / Non pour la conformité des étiquettes et des DLU
 function toggleDlu(value) {
     const box = document.getElementById('status_dlu');
     if (!box) return;
@@ -68,6 +72,7 @@ function toggleDlu(value) {
     }
 }
 
+// Gestion des réponses Oui / Non pour la conformité des compatibilités des fûts
 function toggleFuts(value) {
     const div = document.getElementById('conditional_futs');
     const select = document.getElementById('actionFuts');
@@ -81,7 +86,7 @@ function toggleFuts(value) {
     }
 }
 
-// --- GESTION SÉCURISÉE DES APERÇUS PHOTOS ---
+// Gestion des apercus des photos
 function setupPreview(inputId, previewId) {
     const input = document.getElementById(inputId);
     const preview = document.getElementById(previewId);
@@ -101,16 +106,16 @@ function setupPreview(inputId, previewId) {
     }
 }
 
-// On active l'aperçu pour TOUTES les photos
+// On active l'aperçu pour toutes les photos
 setupPreview('photoBalancesInput', 'aperçuBalances');
 setupPreview('photoEpoxyInput', 'aperçuEpoxy');
 setupPreview('photoRésultatInput', 'aperçuRésultat');
 
 
-// --- GESTION DE LA SIGNATURE ---
+// Gestion de la signature
 window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('signaturePad');
-    if (!canvas) return; // Sécurité anti-crash
+    if (!canvas) return;
         
     const ctx = canvas.getContext('2d');
     const clearButton = document.getElementById('clearBtn');

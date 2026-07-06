@@ -17,7 +17,7 @@ def envoyer_notification(donnees):
     mot_de_passe = "*jojo83*"
     
     # Liste des personnes qui vont recevoir le mail
-    destinataires = ["jcoisine@smm-composites.com", "jgueguen@smm-composites.com"]
+    destinataires = ["jcoisine@smm-composites.com"]
 
     # --- CRÉATION DU MESSAGE ---
     msg = MIMEMultipart()

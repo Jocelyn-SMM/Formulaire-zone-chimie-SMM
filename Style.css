@@ -150,7 +150,22 @@ input:checked + .radio-label {
     transition: background-color 0.2s, transform 0.1s;
 }
 
-/* Effet au survol ou au clic */
+
+.masque {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+#image-standard {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 10px auto;
+}
+
 .btn-standard:active {
     background-color: #c9302c;
     transform: scale(0.98); /* Petit effet d'enfoncement */

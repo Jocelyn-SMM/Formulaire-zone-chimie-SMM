@@ -22,12 +22,14 @@ function basculerStandard() {
     var img = document.getElementById("image-standard");
     var btn = document.getElementById("btn-5s");
     
-    if (img.style.display === "none") {
-        img.style.display = "block";
-        btn.innerText = "Cacher 5S";
+    if (img.classList.contains("masque")) {
+        img.classList.remove("masque");
+        img.classList.add("visible");
+        btn.innerText = "Cacher le 5S";
     } else {
-        img.style.display = "none";
-        btn.innerText = "Afficher 5S";
+        img.classList.remove("visible");
+        img.classList.add("masque");
+        btn.innerText = "Afficher le 5S";
     }
 }
 

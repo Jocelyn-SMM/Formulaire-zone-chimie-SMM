@@ -24,7 +24,7 @@ function basculerStandard() {
     
     if (img.style.display === "none") {
         img.style.display = "block";
-        btn.innerText = "Cacher le standard";
+        btn.innerText = "Standard 5S";
     } else {
         img.style.display = "none";
         btn.innerText = "Standard 5S";

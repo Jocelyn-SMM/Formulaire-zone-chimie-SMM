@@ -15,7 +15,25 @@
     <div style="text-align: center; margin-bottom: 20px;">
         <img src="Logo SMM.png" alt="Logo SMM Composites" style="max-width: 150px;">
     </div>
-    <h2>Audit zone chimie</h2>
+    <h2>Audit 5S zone de produit chimique</h2>
+
+    <div class="trame-5s">
+        <label>Trame 5S de la zone de produit chimique</label>
+        <p> Veuillez suivre la trame 5S afin de ranger et de nettoyer la zone de produit chimique.</p>
+        <ol>
+            <li><b> Retirer </b>le carton (côté époxy)</li>
+            <li><b> Balayer </b> l'ensemble de la zone</li>
+            <li><b> Poser </b> un carton propre au sol (côté époxy)</li>
+            <li><b> Jeter </b> à la poubelle les déchets qui trainent</li>
+            <li><b> Appliquer </b> de l'absorbant sur les produits chimiques au sol</li>
+            <li><b> Contrôler </b> l'étiquetage (identification, DLU, ...) des seaux isolés</li>
+            <li><b> Verser </b> les seaux conformes dans les contenants d'origine</li>
+            <li><b> Si c'est de la résine : </b> Faire catalyser dans la zone déchet extérieure</li>
+            <li><b> Jeter les non-conformes : </b> résines à catalyser à l'extérieur, autres à la poubelle</li>
+            <li><b> Vérifier </b> la compatibilité des produits sur les bacs de rétention</li>
+            <li><b> Nettoyer </b> ou remplacer le téflon des balances si nécessaire</li>
+        </ol>
+    </div>
 
     <div class="button-group">
         <button type="button" id="resetFormBtn" class="btn-reset"> ✕ Supprimer </button>
@@ -40,14 +58,15 @@
             <label> * Zone balayée ?</label>
             <div class="radio-tile-group">
                 <div class="radio-container">
-                    <input type="radio" id="zone_balayée_oui" name="zone_balayée" value="Oui" required>
+                    <input type="radio" id="zone_balayée_oui" name="zone_balayée" value="Oui" onchange="togglebalayee(this.value)" required>
                     <label for="zone_balayée_oui" class="radio-label">Oui</label>
                 </div>
                 <div class="radio-container">
-                    <input type="radio" id="zone_balayée_non" name="zone_balayée" value="Non">
+                    <input type="radio" id="zone_balayée_non" name="zone_balayée" value="Non" onchange="togglebalayee(this.value)">
                     <label for="zone_balayée_non" class="radio-label">Non</label>
                 </div>
             </div>
+            <div id="status_balayee" class="status-box" style="display:none;"></div>
         </div>
 
         
@@ -110,7 +129,7 @@
     </div>
 
     <div class="form-group">
-        <label> * Etiquetage et DLU conforment ?</label>
+        <label> * Etiquetage et DLU des seaux isolés conforment ?</label>
         <div class="radio-tile-group">
             <div class="radio-container">
                 <input type="radio" id="dlu_oui" name="dlu" value="Oui" onchange="toggleDlu(this.value)" required>
@@ -125,7 +144,7 @@
     <div id="status_dlu" class="status-box" style="display:none;"></div>
 
     <div class="form-group">
-        <label> * Compatibilité des fûts ?</label>
+        <label> * Compatibilité des fûts sur bacs de rétention conforme ?</label>
         <div class="radio-tile-group">
             <div class="radio-container">
                 <input type="radio" id="futs_oui" name="futs" value="Oui" onchange="toggleFuts(this.value)" required>

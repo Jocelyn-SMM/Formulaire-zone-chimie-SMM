@@ -33,6 +33,20 @@ function basculerStandard() {
     }
 }
 
+// Gestion des réponses Oui / Non pour avoir balayé la zone
+function togglebalayee(value) {
+    const box = document.getElementById('status_balayee');
+    if (!box) return;
+    box.style.display = 'block';
+    if(value === 'Oui') {
+        box.className = 'status-box status-conforme';
+        box.innerHTML = '✅ CONFORME<br>';
+    } else {
+        box.className = 'status-box status-nonconforme';
+        box.innerHTML = '🚨 NON CONFORME<br>';
+    }
+}
+
 // Gestion des réponses Oui / Non pour la présence de déchets sur la zone
 function toggleDechets(value) {
     const box = document.getElementById('status_dechets');
